@@ -37,6 +37,7 @@ import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.filters.RateLimitPos
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.filters.RateLimitPreFilter;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.DefaultRateLimitKeyGenerator;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.DefaultRateLimitUtils;
+import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.JwtTokenUtil;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.SecuredRateLimitUtils;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.StringToMatchTypeConverter;
 import com.netflix.zuul.ZuulFilter;
@@ -91,7 +92,10 @@ public class RateLimitAutoConfiguration {
     public RateLimiterErrorHandler rateLimiterErrorHandler() {
         return new DefaultRateLimiterErrorHandler();
     }
-
+    @Bean("tokenUtil")
+    JwtTokenUtil jwtTokenUtil() {
+		return new JwtTokenUtil();
+    }
     @Bean
     public ZuulFilter rateLimiterPreFilter(final RateLimiter rateLimiter, final RateLimitProperties rateLimitProperties,
                                            final RouteLocator routeLocator, final RateLimitKeyGenerator rateLimitKeyGenerator,

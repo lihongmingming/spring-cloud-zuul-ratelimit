@@ -46,17 +46,21 @@ public abstract class AbstractRateLimitFilter extends ZuulFilter {
     @Override
     public boolean shouldFilter() {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-        return properties.isEnabled() && !policy(route(request), request).isEmpty();
+        boolean enable = properties.isEnabled();
+        List<Policy> policies = policy(route(request), request);
+        return enable && !policies.isEmpty();
     }
 
     Route route(HttpServletRequest request) {
         String requestURI = urlPathHelper.getPathWithinApplication(request);
-        return routeLocator.getMatchingRoute(requestURI);
+        Route route = routeLocator.getMatchingRoute(requestURI);
+        return route;
     }
 
     protected List<Policy> policy(Route route, HttpServletRequest request) {
         String routeId = Optional.ofNullable(route).map(Route::getId).orElse(null);
-        return properties.getPolicies(routeId).stream()
+        List<Policy> policies = properties.getPolicies(routeId);
+        return policies.stream()
             .filter(policy -> applyPolicy(request, route, policy))
             .collect(Collectors.toList());
     }

@@ -21,6 +21,10 @@ import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.config.properties.Ra
 import lombok.RequiredArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.Set;
 
 import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.X_FORWARDED_FOR_HEADER;
@@ -34,10 +38,13 @@ public class DefaultRateLimitUtils implements RateLimitUtils {
     private static final String ANONYMOUS_USER = "anonymous";
 
     private final RateLimitProperties properties;
-
+	@Autowired
+	JwtTokenUtil tokenUtil;
     @Override
     public String getUser(final HttpServletRequest request) {
-        return request.getRemoteUser() != null ? request.getRemoteUser() : ANONYMOUS_USER;
+    	String userCode=null;
+        userCode=tokenUtil.getUserCode();
+        return userCode != null&&userCode!="" ? userCode : ANONYMOUS_USER;
     }
 
     @Override

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>spring-cloud-zuul-ratelimit-parent</artifactId>
-        <groupId>com.marcosbarbero.cloud</groupId>
-        <version>2.2.3.RELEASE</version>
+        <groupId>ins-framework-cloud</groupId>
+        <version>6.2.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -106,106 +106,34 @@
 
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <!-- Copy the ant tasks jar. Needed for ts.jacoco.report-ant . -->
-                    <execution>
-                        <id>jacoco-dependency-ant</id>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <phase>process-test-resources</phase>
-                        <inherited>false</inherited>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.jacoco</groupId>
-                                    <artifactId>org.jacoco.ant</artifactId>
-                                    <version>${jacoco.version}</version>
-
-                                </artifactItem>
-                            </artifactItems>
-                            <stripVersion>true</stripVersion>
-                            <outputDirectory>${basedir}/target/jacoco-jars</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <!-- Execute an ant task within maven -->
-                                <echo message="Generating JaCoCo Reports"/>
-                                <taskdef name="report" classname="org.jacoco.ant.ReportTask">
-                                    <classpath path="${basedir}/target/jacoco-jars/org.jacoco.ant.jar"/>
-                                </taskdef>
-                                <mkdir dir="${basedir}/target/coverage-report"/>
-                                <report>
-                                    <structure name="jacoco-multi Coverage Project">
-                                        <group name="jacoco-multi">
-                                            <classfiles>
-                                                <fileset dir="${classes.directory.core}"/>
-                                                <fileset dir="${classes.directory.it.redis}"/>
-                                                <fileset dir="${classes.directory.it.consul}"/>
-                                                <fileset dir="${classes.directory.it.springdata}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-hazelcast}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-ignite}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-infinispan}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-jcache}"/>
-                                                <fileset dir="${classes.directory.it.security-context}" />
-                                            </classfiles>
-                                            <sourcefiles encoding="UTF-8">
-                                                <fileset dir="${sources.directory.core}"/>
-                                                <fileset dir="${sources.directory.it.redis}"/>
-                                                <fileset dir="${classes.directory.it.consul}"/>
-                                                <fileset dir="${classes.directory.it.springdata}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-hazelcast}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-ignite}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-infinispan}"/>
-                                                <fileset
-                                                  dir="${classes.directory.it.bucket4j-jcache}"/>
-                                                <fileset dir="${classes.directory.it.security-context}" />
-                                            </sourcefiles>
-                                        </group>
-                                    </structure>
-                                    <html destdir="${basedir}/target/coverage-report/html"/>
-                                    <xml destfile="${basedir}/target/coverage-report/coverage-report.xml"/>
-                                    <csv destfile="${basedir}/target/coverage-report/coverage-report.csv"/>
-                                </report>
-                            </target>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>org.jacoco.ant</artifactId>
-                        <version>${jacoco.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-        </plugins>
-    </build>
+    <!-- 插件配置 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+			<!-- install插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

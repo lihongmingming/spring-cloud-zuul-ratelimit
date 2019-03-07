@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>ins-framework-cloud</groupId>
+        <groupId>ins.framework.cloud</groupId>
         <artifactId>spring-cloud-zuul-ratelimit-parent</artifactId>
         <version>6.2.2-SNAPSHOT</version>
         <relativePath>..</relativePath>

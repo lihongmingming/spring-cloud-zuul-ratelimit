@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ins-framework-cloud</groupId>
+    <groupId>ins.framework.cloud</groupId>
     <artifactId>spring-cloud-zuul-ratelimit-dependencies</artifactId>
     <version>6.2.2-SNAPSHOT</version>
     <packaging>pom</packaging>

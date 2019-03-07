@@ -9,7 +9,7 @@
         <version>2.0.8.RELEASE</version>
     </parent>
 
-    <groupId>ins-framework-cloud</groupId>
+    <groupId>ins.framework.cloud</groupId>
     <artifactId>spring-cloud-zuul-ratelimit-parent</artifactId>
     <name>Rate limit configuration for Spring Cloud Netflix Zuul</name>
     <packaging>pom</packaging>
@@ -53,7 +53,7 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>ins-framework-cloud</groupId>
+                <groupId>ins.framework.cloud</groupId>
                 <artifactId>spring-cloud-zuul-ratelimit-dependencies</artifactId>
                 <version>${project.version}</version>
                 <type>pom</type>

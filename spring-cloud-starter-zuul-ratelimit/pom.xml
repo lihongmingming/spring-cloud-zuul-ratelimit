@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>spring-cloud-zuul-ratelimit-parent</artifactId>
-        <groupId>ins-framework-cloud</groupId>
+        <groupId>ins.framework.cloud</groupId>
         <version>6.2.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>ins-framework-cloud</groupId>
+            <groupId>ins.framework.cloud</groupId>
             <artifactId>spring-cloud-zuul-ratelimit-core</artifactId>
             <version>${project.version}</version>
         </dependency>

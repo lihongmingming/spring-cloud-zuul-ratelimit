@@ -28,7 +28,7 @@
 
 [NOTE]
 ====
-Latest version: image:http://git.jsptz.com/cloud/pictures/raw/master/arch6/badge.svg["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
+Latest version: image::http://git.jsptz.com/cloud/pictures/raw/master/arch6/badge.png["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
 ====
 
 Add the dependency on pom.xml

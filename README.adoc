@@ -21,14 +21,14 @@
 
 [NOTE]
 ====
-只需将多个配置段添加到列表中，就可以组合经过身份验证的用户，请求源，URL，ROLE和请求方法的方式进行限流。
+只需将多个配置段添加到列表中，就可以组合经过身份验证的用户，请求源，URL和请求方法的方式进行限流。
 ====
 
 == 使用方式
 
 [NOTE]
 ====
-Latest version: image:https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit/badge.svg["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
+Latest version: image:http://git.jsptz.com/cloud/pictures/raw/master/arch6/badge.svg["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
 ====
 
 Add the dependency on pom.xml

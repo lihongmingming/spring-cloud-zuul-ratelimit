@@ -1,38 +1,34 @@
-= Spring Cloud Zuul RateLimit image:https://travis-ci.org/marcosbarbero/spring-cloud-zuul-ratelimit.svg?branch=master["Build Status", link="https://travis-ci.org/marcosbarbero/spring-cloud-zuul-ratelimit"] image:https://coveralls.io/repos/github/marcosbarbero/spring-cloud-zuul-ratelimit/badge.svg?branch=master["Coverage Status", link="https://coveralls.io/github/marcosbarbero/spring-cloud-zuul-ratelimit?branch=master"] image:https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit"]
+= Spring Cloud Zuul RateLimit
 :toc:
 
 :imagesdir: ./assets/images
 
-== Overview
-Module to enable rate limit per service in Netflix Zuul.
+== 概述
+用于在网关Zuul中启用每项服务的访问速率限制的模块。
 
-There are five built-in rate limit approaches:
+有四种内置速率限制方法：
 
- * Authenticated User
- ** Uses the authenticated username or 'anonymous'
- * Request Origin
- ** Uses the user origin request
- * URL
- ** Uses the request path of the downstream service
- * ROLE
- ** Uses the authenticated user roles
- * Request method
- ** Uses the HTTP request method
- * Global configuration per service:
- ** This one does not validate the request Origin, Authenticated User or URI
- ** To use this approach just don't set param 'type'
+ * 根据用户（User）
+ ** 使用认证用户的用户代码或者匿名用户'anonymous'
+ * 请求源地址（Orign）
+ ** 根据请求的源地址信息
+ * 接口URL（URL）
+ ** 根据下游服务的请求路径
+ * 请求方法类型(Request method)
+ ** 根据请求方法的类型（GET，POST，PUT，DELETE）
+ * 可针对每项服务进行全局配置
+ ** 要使用这种方式配置，请不要设置参数'type'
 
 [NOTE]
 ====
-It is possible to combine Authenticated User, Request Origin, URL, ROLE and Request Method just adding
-multiple values to the list
+只需将多个配置段添加到列表中，就可以组合经过身份验证的用户，请求源，URL，ROLE和请求方法的方式进行限流。
 ====
 
-== Usage
+== 使用方式
 
 [NOTE]
 ====
-Latest version: image:https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit/badge.svg["Maven Central", link="https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit"]
+Latest version: image:https://maven-badges.herokuapp.com/maven-central/com.marcosbarbero.cloud/spring-cloud-zuul-ratelimit/badge.svg["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
 ====
 
 Add the dependency on pom.xml

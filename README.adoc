@@ -28,21 +28,21 @@
 
 [NOTE]
 ====
-Latest version: image::http://git.jsptz.com/cloud/pictures/raw/master/arch6/badge.png["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
+Latest version: image:badge.png["Maven Central", link="https://github.com/lihongmingming/spring-cloud-zuul-ratelimit/releases/tag/6.2.2-SNAPSHOT"]
 ====
 
-Add the dependency on pom.xml
+在pom.xml文件中添加依赖
 
 [source, xml]
 ----
 <dependency>
-    <groupId>com.marcosbarbero.cloud</groupId>
+    <groupId>ins.framework.cloud</groupId>
     <artifactId>spring-cloud-zuul-ratelimit</artifactId>
-    <version>LATEST</version>
+    <version>6.2.2-SNAPSHOT</version>
 </dependency>
 ----
 
-Add the following dependency accordingly to the chosen data storage: 
+添加redis依赖作为限流数据存储的数据源
 
 
 * Redis
@@ -55,87 +55,7 @@ Add the following dependency accordingly to the chosen data storage:
 </dependency>
 ----
 
-* Consul
-
-[source, xml]
-----
-<dependency>
-   <groupId>org.springframework.cloud</groupId>
-   <artifactId>spring-cloud-starter-consul</artifactId>
-</dependency>
-----
-
-* Spring Data JPA
-
-[source, xml]
-----
-<dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>
-----
-
-* Bucket4j JCache
-
-[source, xml]
-----
-<dependency>
-     <groupId>com.github.vladimir-bukhtoyarov</groupId>
-     <artifactId>bucket4j-core</artifactId>
-</dependency>
-<dependency>
-     <groupId>com.github.vladimir-bukhtoyarov</groupId>
-     <artifactId>bucket4j-jcache</artifactId>
-</dependency>
-<dependency>
-     <groupId>javax.cache</groupId>
-     <artifactId>cache-api</artifactId>
-</dependency>
-----
-
-* Bucket4j Hazelcast (depends on Bucket4j JCache)
-
-[source, xml]
-----
-<dependency>
-     <groupId>com.github.vladimir-bukhtoyarov</groupId>
-     <artifactId>bucket4j-hazelcast</artifactId>
-</dependency>
-<dependency>
-     <groupId>com.hazelcast</groupId>
-     <artifactId>hazelcast</artifactId>
-</dependency>
-----
-
-* Bucket4j Infinispan (depends on Bucket4j JCache)
-
-[source, xml]
-----
-<dependency>
-     <groupId>com.github.vladimir-bukhtoyarov</groupId>
-     <artifactId>bucket4j-infinispan</artifactId>
-</dependency>
-<dependency>
-     <groupId>org.infinispan</groupId>
-     <artifactId>infinispan-core</artifactId>
-</dependency>
-----
-
-* Bucket4j Ignite (depends on Bucket4j JCache)
-
-[source, xml]
-----
-<dependency>
-     <groupId>com.github.vladimir-bukhtoyarov</groupId>
-     <artifactId>bucket4j-ignite</artifactId>
-</dependency>
-<dependency>
-     <groupId>org.apache.ignite</groupId>
-     <artifactId>ignite-core</artifactId>
-</dependency>
-----
-
-Sample configuration
+配置样例
 [source, yaml]
 ----
 zuul:
@@ -146,70 +66,42 @@ zuul:
     behind-proxy: true
     add-response-headers: true
     default-policy-list: #optional - will apply unless specific policy exists
-      - limit: 10 #optional - request number limit per refresh interval window
-        quota: 1000 #optional - request time limit per refresh interval window (in seconds)
-        refresh-interval: 60 #default value (in seconds)
-        type: #optional
-          - user
-          - origin
-          - url
-          - httpmethod
+    - limit: 10 #optional - request number limit per refresh interval window
+      quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+      refresh-interval: 60 #default value (in seconds)
+      type: #optional
+      - user
+      - origin
+      - url
+      - httpmethod
     policy-list:
       myServiceId:
-        - limit: 10 #optional - request number limit per refresh interval window
-          quota: 1000 #optional - request time limit per refresh interval window (in seconds)
-          refresh-interval: 60 #default value (in seconds)
-          type: #optional
-            - user
-            - origin
-            - url
+      - limit: 10 #optional - request number limit per refresh interval
+        quota: 1000 #optional - request time limit per refresh interval window (in seconds)
+        refresh-interval: 60 #default value (in seconds)
         - type: #optional value for each type
-            - user=anonymous
-            - origin=somemachine.com
-            - url=/api #url prefix
-            - role=user
-            - httpmethod=get #case insensitive
+          - user=anonymous
+          - origin=somemachine.com
+          - url=/api #url prefix
+          - httpmethod=get #case insensitive
 ----
 
-== Available implementations
+== 实现方式
 
-There are eight implementations provided:
+我们推荐的是用redis实现限流
 
 [cols=2*, options="header"]
 |===
-|Implementation        | Data Storage
-
-|ConsulRateLimiter     | https://www.consul.io/[Consul]
+|实现        | 数据存储
 
 |RedisRateLimiter      | https://redis.io/[Redis]
+|===
+== 公共配置竖向
 
-|SpringDataRateLimiter | https://projects.spring.io/spring-data-jpa/[Spring Data]
-
-|Bucket4jJCacheRateLimiter
-
-.4+.^|https://github.com/vladimir-bukhtoyarov/bucket4j[Bucket4j]
-
-|Bucket4jHazelcastRateLimiter
-
-|Bucket4jIgniteRateLimiter
-
-|Bucket4jInfinispanRateLimiter
+属性空间: __zuul.ratelimit__
 
 |===
-
-Bucket4j implementations require the relevant bean with `@Qualifier("RateLimit")`:
-
- * `JCache` - javax.cache.Cache
- * `Hazelcast` - com.hazelcast.core.IMap
- * `Ignite` - org.apache.ignite.IgniteCache
- * `Infinispan` - org.infinispan.functional.ReadWriteMap
- 
-== Common application properties
-
-Property namespace: __zuul.ratelimit__
-
-|===
-|Property name| Values |Default Value
+|属性名| 值 |默认值
 
 |enabled             |true/false                   |false
 |behind-proxy        |true/false                   |false
@@ -223,10 +115,10 @@ Property namespace: __zuul.ratelimit__
 
 |===
 
-Policy properties:
+策略属性:
 
 |===
-|Property name| Values |Default Value
+|属性名| 值 |默认值
 
 |limit           |number of calls      |  -
 |quota           |time of calls        |  -
@@ -235,15 +127,13 @@ Policy properties:
 
 |===
 
-== Further Customization
+== 定制化
 
-This section details how to add custom implementations 
+主要讲述怎么定制化自己的限流策略
 
-=== Key Generator
+=== 限流key生成器
 
-If the application needs to control the key strategy beyond the options offered by the type property then it can 
-be done just by creating a custom link:./spring-cloud-zuul-ratelimit-core/src/main/java/com/marcosbarbero/cloud/autoconfigure/zuul/ratelimit/config/RateLimitKeyGenerator.java[`RateLimitKeyGenerator`]
-implementation adding further qualifiers or something entirely different:
+如果应用程序需要控制超出type属性提供的选项的关键策略，那么它可以创建自定义[`RateLimitKeyGenerator`]即可实现添加更多限流规则或者策略。
 
 [source, java]
 ----
@@ -258,15 +148,10 @@ implementation adding further qualifiers or something entirely different:
   }
 ----
 
-=== Error Handling
-This framework uses some 3rd party applications to store and control the rate limit access, as it does not has control
-over those applications and they can fail once a while the framework itself handles the failure in the class 
-link:./spring-cloud-zuul-ratelimit-core/src/main/java/com/marcosbarbero/cloud/autoconfigure/zuul/ratelimit/config/repository/DefaultRateLimiterErrorHandler.java[`DefaultRateLimiterErrorHandler`]
-just by adding some error logs.
+=== 错误处理（Error Handling）
+此框架使用一些第三方应用程序来存储控制速率限制访问数据，它无法控制这些应用程序，所以只需添加一些错误日志。框架本身就可以在类DefaultRateLimiterErrorHandler中处理失败。
 
-If there is a need to handle the errors differently, it can be achieved just by defining a custom
-link:./spring-cloud-zuul-ratelimit-core/src/main/java/com/marcosbarbero/cloud/autoconfigure/zuul/ratelimit/config/repository/RateLimiterErrorHandler.java[`RateLimiterErrorHandler`]
-bean, e.g:
+如果需要以不同方式处理错误，可以通过定义自定义RateLimiterErrorHandler bean来实现，例如：
 
 [source, java]
 ----
@@ -290,29 +175,3 @@ bean, e.g:
     }
   }
 ----
-
-== Contributing
-Spring Cloud Zuul Rate Limit is released under the non-restrictive Apache 2.0 license, and follows a very 
-standard Github development process, using Github tracker for issues and merging pull requests into master. 
-If you want to contribute even something trivial please do not hesitate, but follow the guidelines below.
-
-=== Adding Project Lombok Agent
-This project uses http://projectlombok.org/features/index.html[Project Lombok]
-to generate getters and setters etc. Compiling from the command line this
-shouldn't cause any problems, but in an IDE you need to add an agent
-to the JVM. Full instructions can be found in the Lombok website. The
-sign that you need to do this is a lot of compiler errors to do with
-missing methods and fields.
-
-=== Code of Conduct
-This project adheres to the Contributor Covenant 
-https://github.com/marcosbarbero/spring-cloud-starter-zuul-ratelimit/blob/master/docs/code-of-conduct.adoc[code of conduct].
-By participating, you are expected to uphold this code. Please report unacceptable behavior to marcos.hgb@gmail.com.
-
-=== Acknowledgement
-
-image::jetbrains_logo.png[Jetbrains, 150, link="https://www.jetbrains.com/"]
-
-== Footnote
-Any doubt open an https://github.com/marcosbarbero/spring-cloud-starter-zuul-ratelimit/issues[issue].
-Any fix send me a https://github.com/marcosbarbero/spring-cloud-starter-zuul-ratelimit/pulls[Pull Request].
